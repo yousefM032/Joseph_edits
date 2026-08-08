@@ -889,17 +889,34 @@ if (window.innerWidth >= 1024) {
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('.portfolio-card');
+
     cards.forEach(card => {
       const video = card.querySelector('.portfolio-video');
-      card.addEventListener('mouseenter', () => video.play());
-      card.addEventListener('mouseleave', () => {
-        video.pause();
-        video.currentTime = 0;
+      if (!video) return;
+
+      video.muted = true;
+
+      card.addEventListener('mouseenter', () => {
+        if (window.innerWidth >= 1024) {
+          video.play().catch(() => {});
+        }
       });
+
+      card.addEventListener('mouseleave', () => {
+        if (window.innerWidth >= 1024) {
+          video.pause();
+          video.currentTime = 0;
+        }
+      });
+
       card.addEventListener('click', () => {
+        document.querySelectorAll('.portfolio-video').forEach(v => {
+          if (v !== video) v.pause();
+        });
+
         if (video.paused) {
-          document.querySelectorAll('.portfolio-video').forEach(v => v.pause());
-          video.play();
+          video.muted = false;
+          video.play().catch(() => {});
         } else {
           video.pause();
         }
