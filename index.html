@@ -910,17 +910,17 @@ if (window.innerWidth >= 1024) {
       });
 
       card.addEventListener('click', () => {
-        document.querySelectorAll('.portfolio-video').forEach(v => {
-          if (v !== video) v.pause();
-        });
+  document.querySelectorAll('.portfolio-video').forEach(v => {
+    if (v !== video) v.pause();
+  });
 
-        if (video.paused) {
-          video.muted = false;
-          video.play().catch(() => {});
-        } else {
-          video.pause();
-        }
-      });
+  if (video.paused) {
+    video.muted = false;
+    video.play().catch(() => {});
+  } else {
+    video.pause();
+  }
+});
     });
   });
 </script>
