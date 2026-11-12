@@ -143,15 +143,15 @@ button,a{-webkit-tap-highlight-color:transparent}
 .work-card:hover .work-media:after{animation:scanSweep 1.15s ease}
 .work-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(12,13,10,.1);transition:background .25s}
 .work-card:hover .work-overlay{background:rgba(12,13,10,.25)}
-.play{width:52px;height:52px;border-radius:50%;border:1px solid rgba(255,255,255,.7);background:rgba(17,18,15,.45);backdrop-filter:blur(8px);display:grid;place-items:center;color:white;transition:transform .25s,background .25s;position:relative;overflow:hidden}
+.play{width:52px;height:52px;border-radius:50%;border:1px solid rgba(255,255,255,.7);background:rgba(17,18,15,.45);backdrop-filter:blur(8px);display:grid;place-items:center;color:white;transition:transform .25s,background .25s,opacity .25s;position:relative;overflow:hidden}
 .play svg{width:15px;height:15px;fill:currentColor;margin-left:2px}
 .play:after{content:"";position:absolute;inset:-40%;background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.5) 50%,transparent 65%);transform:translateX(-130%) rotate(15deg)}
 .work-card:hover .play:after{animation:buttonShine .9s ease}
 .work-card:hover .play{transform:scale(1.08);background:var(--accent);color:#171911;border-color:var(--accent)}
 .work-meta{display:flex;justify-content:space-between;align-items:center;padding:12px 13px;color:#c4c5bb;font:10px var(--mono);letter-spacing:.08em}
 .work-meta span:last-child{color:#77796e}
+.work-card.is-playing .work-overlay{pointer-events:none;background:transparent}
 .work-card.is-playing .play{opacity:0}
-.work-card.is-playing:hover .play{opacity:1}
 
 /* Process */
 .process-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
@@ -695,6 +695,10 @@ videos.forEach((item,index) => {
 
   const video = card.querySelector("video");
   const button = card.querySelector("button");
+
+  /* Keep the overlay state in sync with actual playback */
+  video.addEventListener("play", () => card.classList.add("is-playing"));
+  video.addEventListener("pause", () => card.classList.remove("is-playing"));
 
   const play = async (withSound = false) => {
     document.querySelectorAll(".work-card video").forEach(other => {
